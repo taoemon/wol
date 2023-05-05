@@ -3,9 +3,9 @@
 // 新しいデバイスを追加するには、下記の「wolSettings」配列に新しいオブジェクトを追加してください。
 const wolSettings = [
     // 1つ目のデバイスの設定
-    { url: 'wol.php', targetIpAddress: '192.168.1.10', macAddress: '00:00:00:00:00:00', count: 3 },
+    { url: 'wol.php', targetIpAddress: '192.168.1.10', macAddress: '11:11:11:11:11:11', count: 3 },
     // 2つ目のデバイスの設定
-    { url: 'wol.php', targetIpAddress: '192.168.1.11', macAddress: '11:11:11:11:11:11', count: 3 },
+    { url: 'wol.php', targetIpAddress: '192.168.1.11', macAddress: '22:22:22:22:22:22', count: 3 },
     // 他のデバイスもここに追加できます
 ];
 
@@ -55,14 +55,21 @@ function startCountdown(seconds, countdownElementId, targetIpAddress) {
 
 // Ping送信する関数
 function sendPing(targetIpAddress) {
-    // Ping送信用のフォームを作成
+    // Ping送信用のURLを作成
+    const url = `wol_ping.php?ip_address=${encodeURIComponent(targetIpAddress)}&count=5`;
+
+    // 結果を表示するiframe要素を指定
+    const iframe = document.createElement('ping-iframe');
+    iframe.src = url;
+
+    // Ping送信用のフォームを指定
     const form = document.createElement('form');
-    form.method = 'post';
-    form.action = 'ping.php';
+    form.method = 'get';
+    form.action = 'wol_ping.php';
     form.target = 'ping-iframe';
     form.style.display = 'none';
 
-    // IPアドレスを指定するinput要素を作成
+    // IPアドレスを指定するinput要素を指定
     const ipInput = document.createElement('input');
     ipInput.type = 'hidden';
     ipInput.name = 'ip_address';

@@ -6,8 +6,8 @@
     <title>Wake On LAN & Ping Test</title>
     <link rel="stylesheet" href="wol.css">
 </head>
-<!-- HTML構文です。 -->
-<!-- 複数のパソコンをWOLで起動する場合、「wol.js」の「wolSettings」配列を追加し、対応するコードを以下の「wolSettings[X]」の「X」を加算して追記 -->
+<!-- HTML構文です -->
+<!-- 複数のパソコンをWOLで起動する場合、上記の「wolSettings」配列を追加し、対応するコードを「wolSettings[X]」の「X」を加算して追記 -->
 <!-- 複数のパソコンをWOLで起動する場合、「'wol-result1', 'countdown1'」の数値箇所変更して追記 -->
 <body>
     <header>
@@ -32,11 +32,10 @@
                 </div>
             </div>
         </section>
-        <div class="spacer"></div>
-        <section id="ping-test">
+            <div class="spacer"></div>
             <h2>Ping Test</h2>
             <p>以下のフォームにIPアドレス(ホスト名)と回数を入力し、「Ping」ボタンを押すとPingテストが実行されます。</p>
-            <form id="ping-form" action="ping.php" method="post" target="ping-iframe">
+            <form id="ping-form" action="ping.php" method="get" target="ping-iframe">
                 <div class="form-group">
                     <label for="ip_address">IPアドレス(ホスト名):</label><br>
                     <input type="text" id="ip_address" name="ip_address" required>

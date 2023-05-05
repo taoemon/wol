@@ -23,7 +23,7 @@ function ping($ip_address, $count)
     return $ping_results;
 }
 
-// IPアドレスと回数がGETされている場合
+// IPアドレスと回数がGETで送られている場合
 if (isset($_GET['ip_address']) && isset($_GET['count'])) {
     $ip_address = $_GET['ip_address'];
     $count = $_GET['count'];
@@ -33,7 +33,7 @@ if (isset($_GET['ip_address']) && isset($_GET['count'])) {
     $ping_results = ping($ip_address, $count);
 
     // 結果を表示
-    echo "<h3>Ping Test 結果($ip_address, $host_name):</h3><pre>";
+    echo "<h3>WOL後のPing結果($ip_address, $host_name):</h3><pre>";
     foreach ($ping_results as $result) {
         echo 'icmp_seq=' . $result['icmp_seq'] . ' time=' . $result['time'] . " ms\n";
     }
