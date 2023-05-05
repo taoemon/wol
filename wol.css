@@ -1,0 +1,105 @@
+/* ページ全体のスタイル */
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 20px;
+    box-sizing: border-box;
+}
+
+/* ヘッダーのスタイル */
+header {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+/* メインコンテンツのスタイル */
+main {
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+/* Wake On LANコンテナのスタイル */
+.wol-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 20px;
+}
+
+/* Wake On LANアイテムのスタイル */
+.wol-item {
+    flex-basis: calc(50% - 10px);
+    box-sizing: border-box;
+}
+
+/* レスポンシブデザイン: 画面幅が767px以下の場合のスタイル */
+@media screen and (max-width: 767px) {
+    .wol-item {
+        flex-basis: 100%;
+    }
+}
+
+/* フォームの各要素のスタイル */
+form .form-group {
+    margin-bottom: 10px;
+}
+
+/* フォームのテキスト入力と数値入力のスタイル */
+form input[type="text"], form input[type="number"] {
+    width: 100%;
+    max-width: 400px;
+    display: block;
+    margin-bottom: 5px;
+}
+
+/* 送信ボタンのスタイル */
+button[type="submit"] {
+    background-color: #007bff;
+    border: 1px solid #007bff;
+    color: #fff;
+    padding: 6px 12px;
+    font-size: 14px;
+    line-height: 1.5;
+    border-radius: 4px;
+    cursor: pointer;
+    text-decoration: none;
+    display: inline-block;
+}
+
+/* 送信ボタンのホバー時のスタイル */
+button[type="submit"]:hover {
+    background-color: #0069d9;
+    border-color: #0062cc;
+}
+
+/* 送信ボタンがアクティブの時のスタイル */
+button[type="submit"]:active {
+    background-color: #0062cc;
+    border-color: #005cbf;
+}
+
+/* 送信ボタンにフォーカスがある時のスタイル */
+button[type="submit"]:focus {
+    outline: none;
+    box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+}
+
+/* フッターのスタイル */
+footer {
+    text-align: center;
+    margin-top: 20px;
+}
+
+/* iframeのスタイル */
+iframe {
+    width: 100%;
+    max-width: 800px;
+    height: 200px;
+    display: block;
+    margin: 20px auto;
+}
+
+/* スペーサーのスタイル */
+.spacer {
+    height: 40px;
+}

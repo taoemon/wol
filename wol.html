@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Wake On LAN & Ping Test</title>
+    <link rel="stylesheet" href="wol.css">
+</head>
+<!-- HTML構文です。各表現に交わせて修正 -->
+<!-- 複数のパソコンをWOLで起動する場合、上記の「wolSettings」配列を追加し、対応するコードを「wolSettings[X]」の「X」を加算して追記 -->
+<!-- 複数のパソコンをWOLで起動する場合、「'wol-result1', 'countdown1'」の数値箇所変更して追記 -->
+<body>
+    <header>
+        <h1>Wake On LAN & Ping Test</h1>
+    </header>
+    <main>
+        <section id="wake-on-lan">
+            <h2>Wake On LAN</h2>
+            <p>以下のリストから、起動したいパソコンを選択してください。選択したパソコンにWOLとPingが送信されます。</p>
+            <div class="wol-container">
+                <div class="wol-item">
+                    <h3>1. PC1 [192.168.1.10]</h3>
+                    <button onclick="wolPing(wolSettings[0], 'wol-result1', 'countdown1')">WOL & Ping</button>
+                    <div id="wol-result1"></div>
+                    <div id="countdown1"></div>
+                </div>
+                <div class="wol-item">
+                    <h3>2. PC2 [192.168.1.11]</h3>
+                    <button onclick="wolPing(wolSettings[1], 'wol-result2', 'countdown2')">WOL & Ping</button>
+                    <div id="wol-result2"></div>
+                    <div id="countdown2"></div>
+                </div>
+            </div>
+        </section>
+        <div class="spacer"></div>
+        <section id="ping-test">
+            <h2>Ping Test</h2>
+            <p>以下のフォームにIPアドレス(ホスト名)と回数を入力し、「Ping」ボタンを押すとPingテストが実行されます。</p>
+            <form id="ping-form" action="ping.php" method="post" target="ping-iframe">
+                <div class="form-group">
+                    <label for="ip_address">IPアドレス(ホスト名):</label><br>
+                    <input type="text" id="ip_address" name="ip_address" required>
+                </div>
+                <div class="form-group">
+                    <label for="count">回数:</label><br>
+                    <input type="number" id="count" name="count" value="5" min="1">
+                </div>
+                <button type="submit">Ping</button>
+            </form>
+        </section>
+    </main>
+    <iframe name="ping-iframe" id="ping-iframe"></iframe>
+    <script src="wol.js"></script>
+</body>
+</html>
