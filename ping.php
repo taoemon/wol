@@ -33,7 +33,7 @@ if (isset($_GET['ip_address']) && isset($_GET['count'])) {
     $ping_results = ping($ip_address, $count);
 
     // 結果を表示
-    echo "<h3>Ping Test 結果($ip_address, $host_name):</h3><pre>";
+    echo "<pre>Ping Test 結果 ($ip_address, $host_name)\n";
     foreach ($ping_results as $result) {
         echo 'icmp_seq=' . $result['icmp_seq'] . ' time=' . $result['time'] . " ms\n";
     }

@@ -5,6 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Wake On LAN & Ping Test</title>
     <link rel="stylesheet" href="wol.css">
+    <script src="wol.js"></script>
+    <script src="wol_ping.js"></script>
 </head>
 <!-- HTML構文です -->
 <!-- 複数のパソコンをWOLで起動する場合、上記の「wolSettings」配列を追加し、対応するコードを「wolSettings[X]」の「X」を加算して追記 -->
@@ -20,13 +22,13 @@
             <div class="wol-container">
                 <div class="wol-item">
                     <h3>1. PC1 [192.168.1.10]</h3>
-                    <button onclick="wolPing(wolSettings[0], 'wol-result1', 'countdown1')">WOL & Ping</button>
+                    <button onclick="wolPing(wolSettings[0], 'wol-result1', 'countdown1')" type="submit">WOL & Ping</button>
                     <div id="wol-result1"></div>
                     <div id="countdown1"></div>
                 </div>
                 <div class="wol-item">
                     <h3>2. PC2 [192.168.1.11]</h3>
-                    <button onclick="wolPing(wolSettings[1], 'wol-result2', 'countdown2')">WOL & Ping</button>
+                    <button onclick="wolPing(wolSettings[1], 'wol-result2', 'countdown2')" type="submit">WOL & Ping</button>
                     <div id="wol-result2"></div>
                     <div id="countdown2"></div>
                 </div>
@@ -44,11 +46,10 @@
                     <label for="count">回数:</label><br>
                     <input type="number" id="count" name="count" value="5" min="1">
                 </div>
-                <button type="submit">Ping</button>
+                <button type="submit">Ping 開始</button>
             </form>
         </section>
     </main>
     <iframe name="ping-iframe" id="ping-iframe"></iframe>
-    <script src="wol.js"></script>
 </body>
 </html>
