@@ -1,4 +1,5 @@
 <?php
+// ping.php
 // pingを実行する関数
 function ping($ip_address, $count)
 {

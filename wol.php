@@ -1,4 +1,5 @@
 <?php
+// wol.php
 // MACアドレスからマジックパケットを作成する関数
 function createMagicPacket($mac)
 {
