@@ -1,8 +1,7 @@
 <?php
 // wol.php
 // MACアドレスからマジックパケットを作成する関数
-function createMagicPacket($mac)
-{
+function createMagicPacket($mac) {
     // 16進数の文字列からバイナリデータに変換
     $hwaddr = pack('H*', preg_replace('/[^0-9a-fA-F]/', '', $mac));
     // マジックパケットを作成
@@ -10,8 +9,7 @@ function createMagicPacket($mac)
 }
 
 // WOLパケットを送信する関数
-function sendWOLPacket($broadcast, $packet)
-{
+function sendWOLPacket($broadcast, $packet) {
     // UDPソケットを作成
     $sock = socket_create(AF_INET, SOCK_DGRAM, SOL_UDP);
     if ($sock === false) {
@@ -32,8 +30,7 @@ function sendWOLPacket($broadcast, $packet)
 }
 
 // WOLを実行する関数
-function wol($broadcast, $mac)
-{
+function wol($broadcast, $mac) {
     // マジックパケットを作成
     $magicPacket = createMagicPacket($mac);
     // マジックパケットを送信

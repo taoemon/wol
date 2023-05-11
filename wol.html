@@ -7,6 +7,7 @@
     <link rel="stylesheet" href="wol.css">
     <script src="wol.js"></script>
     <script src="wol_ping.js"></script>
+    <script src="ping.js"></script>
 </head>
 <!-- HTML構文です -->
 <!-- 複数のパソコンをWOLで起動する場合、上記の「wolSettings」配列を追加し、対応するコードを「wolSettings[X]」の「X」を加算して追記 -->
@@ -18,38 +19,37 @@
     <main>
         <section id="wake-on-lan">
             <h2>Wake On LAN</h2>
-            <p>以下のリストから、起動したいパソコンを選択してください。選択したパソコンにWOLとPingが送信されます。</p>
+            <p>以下のリストから、起動したいパソコンを選択してください。<br>選択したパソコンにWOLとPingが送信されます。</p>
             <div class="wol-container">
                 <div class="wol-item">
-                    <h3>1. PC1 [192.168.1.10]</h3>
+                    <h3>1. CAT [192.168.123.10]</h3>
                     <button onclick="wolPing(wolSettings[0], 'wol-result1', 'countdown1')" type="submit">WOL & Ping</button>
                     <div id="wol-result1"></div>
                     <div id="countdown1"></div>
                 </div>
                 <div class="wol-item">
-                    <h3>2. PC2 [192.168.1.11]</h3>
+                    <h3>2. PC2 [192.168.123.11]</h3>
                     <button onclick="wolPing(wolSettings[1], 'wol-result2', 'countdown2')" type="submit">WOL & Ping</button>
                     <div id="wol-result2"></div>
                     <div id="countdown2"></div>
                 </div>
             </div>
-        </section>
             <div class="spacer"></div>
             <h2>Ping Test</h2>
             <p>以下のフォームにIPアドレス(ホスト名)と回数を入力し、「Ping」ボタンを押すとPingテストが実行されます。</p>
-            <form id="ping-form" action="ping.php" method="get" target="ping-iframe">
+            <form id="ping-form" onsubmit="doPingTest(event)">
                 <div class="form-group">
                     <label for="ip_address">IPアドレス(ホスト名):</label><br>
-                    <input type="text" id="ip_address" name="ip_address" required>
+                    <input type="text" id="ip_address" name="ip_address" pattern="[A-Za-z0-9.-]+" required>
                 </div>
                 <div class="form-group">
                     <label for="count">回数:</label><br>
                     <input type="number" id="count" name="count" value="5" min="1">
                 </div>
                 <button type="submit">Ping 開始</button>
+                <textarea id="ping-results" readonly rows="10" cols="50"></textarea>
             </form>
         </section>
     </main>
-    <iframe name="ping-iframe" id="ping-iframe"></iframe>
 </body>
 </html>
