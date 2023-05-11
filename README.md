@@ -12,7 +12,9 @@
 機能概要
 1. wol.js は、WOL パケットと Ping テストを実行するための関数 wolPing と、カウントダウンを開始するための関数 startCountdown を提供します。
 2. wol_ping.js は、Ping を実行するための関数 wolSendPing を提供します。
-3. index.html は、WOL と Ping テストのための HTML フォームを提供し、WOL ボタンと Ping ボタンを表示します。WOL ボタンをクリックすると、特定のパソコンに WOL ・パケットと Ping テストが送信されます。Ping ボタンをクリックすると、ユーザーが入力した IP アドレスと回数で Ping テストが実行されます。また、実行結果は textarea 要素に表示されます。
+3. index.html は、WOL と Ping テストのための HTML フォームを提供し、WOL ボタンと Ping ボタンを表示します。
+4. WOL ボタンをクリックすると、特定のパソコンに WOL ・パケットと Ping テストが送信されます。
+5. Ping ボタンをクリックすると、ユーザーが入力した IP アドレスと回数で Ping テストが実行されます。また、実行結果は textarea 要素に表示されます。
 
 
 # wol.css
