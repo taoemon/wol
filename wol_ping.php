@@ -1,5 +1,7 @@
 <?php
 // wol_ping.php
+header("Content-Type: application/json");
+
 // pingを実行する関数
 function ping($ip_address, $count)
 {
