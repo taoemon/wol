@@ -6,7 +6,7 @@ const wolSettings = [
     {
         url: 'wol.php',
         targetIpAddress: '192.168.123.10',
-        macAddress: 'ac:22:0b:cb:25:4e',
+        macAddress: '11:11:11:11:11:11',
         count: 3
     },
     // 2つ目のデバイスの設定
