@@ -1,49 +1,41 @@
 // wol_ping.js
-// Ping を送信する関数
+// 関数 wolSendPing() は、ping テストを実行します。
 function wolSendPing(targetIpAddress) {
-    // Ping を送信するための URL を作成します。
-    const url = `wol_ping.php?ip_address=${encodeURIComponent(targetIpAddress)}&count=5`;
+    // 入力された IP アドレスと回数を取得します。
+    const ipAddress = targetIpAddress;
+    const count = '5';
 
-    // Fetch APIを使用してリクエストを送信します。
-    fetch(url)
-        .then(response => {
-            // レスポンスをテキストとして取得します。
-            return response.text();
-        })
-        .then(text => {
-            // 結果を表示するtextarea要素を取得します。
-            const textarea = document.getElementById('ping-results');
+    // 結果を表示する div 要素を取得します。
+    const pingResultsDiv = document.getElementById("ping-results");
 
-            // 結果をtextareaに表示します。
-            textarea.value = text;
-        })
-        .catch(error => {
-            console.error('Error:', error);
+    // 結果をクリアします。
+    pingResultsDiv.innerHTML = "";
+
+    // wol_ping.php から結果を取得します。
+    fetch(`wol_ping.php?ip_address=${encodeURIComponent(ipAddress)}&count=${encodeURIComponent(count)}`)
+        .then(response => response.json())
+        .then(data => {
+            // エラーがある場合は、エラーメッセージを表示します。
+            if (data.error) {
+                pingResultsDiv.textContent = data.error;
+            } else {
+                // IP アドレスとホスト名を表示します。
+                pingResultsDiv.textContent = `Ping テストの結果 (${data.ip_address}, ${data.host_name})\n`;
+
+                // 1 秒ごとに結果を表示します。
+                let index = 0;
+                const interval = setInterval(() => {
+                    // 結果の配列が終了するまで繰り返します。
+                    if (index < data.ping_results.length) {
+                        // 結果を 1 行ずつ表示します。
+                        const result = data.ping_results[index];
+                        pingResultsDiv.textContent += `icmp_seq=${result.icmp_seq} time=${result.time} ms\n`;
+                        index++;
+                    } else {
+                        // 間隔をクリアします。
+                        clearInterval(interval);
+                    }
+                }, 1000);
+            }
         });
-
-    // Ping を送信するためのフォームを指定します。
-    const form = document.getElementById('form');
-    form.method = 'get';
-    form.action = 'wol_ping.php';
-    form.target = 'ping-results';
-    form.style.display = 'none';
-
-    // IP アドレスを指定する入力要素を指定します。
-    const ipInput = document.getElementById('input');
-    ipInput.type = 'hidden';
-    ipInput.name = 'ip_address';
-    ipInput.value = targetIpAddress;
-    form.appendChild(ipInput); // フォームに追加します。
-
-    // Ping の回数を指定する入力要素を作成します。
-    const countInput = document.getElementById('input');
-    countInput.type = 'hidden';
-    countInput.name = 'count';
-    countInput.value = '5';
-    form.appendChild(countInput); // フォームに追加します。
-
-    // フォームを DOM に追加します。
-    document.body.appendChild(form);
-    // フォームを送信します（Ping の送信を開始します）。
-    form.submit();
 }

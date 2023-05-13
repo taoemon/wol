@@ -1,18 +1,26 @@
 <?php
+// wol_ping.php
 // pingを実行する関数
 function ping($ip_address, $count)
 {
+    // Pingの結果を格納する配列
     $ping_results = [];
-    // Pingのコマンドは、環境に合わせて修正
+
+    // Ping コマンドの構築
+    // -c パラメータはパケット数を指定します
+    // -n パラメータはパケット数を指定します（Windows のみ）
     // シェルコマンドをWeb経由で実行する場合「ファイルパーミッション」の設定が必要
     // 例：# chmod 4755 /bin/ping
-    $ping_command = "/bin/ping -c " . escapeshellarg($count) . " " . escapeshellarg($ip_address);
+    $ping_command = "/bin/ping -c {$count} {$ip_address}";
 
-    // pingコマンドを実行し、結果を取得
+    // Pingコマンドを実行し、その出力を取得
     $ping_output = shell_exec($ping_command);
+
+    // Pingの出力を行ごとに分割
     $lines = explode("\n", $ping_output);
+
+    // 各行をループして icmp_seq と time を抽出
     foreach ($lines as $line) {
-        // 各行からicmp_seqとtimeを抽出
         if (preg_match('/icmp_seq=(\d+) .* time=([\d.]+) ms/', $line, $matches)) {
             $ping_results[] = [
                 'icmp_seq' => (int) $matches[1],
@@ -20,26 +28,37 @@ function ping($ip_address, $count)
             ];
         }
     }
+
+    // 結果を返す
     return $ping_results;
 }
 
 // IPアドレスと回数がGETで送られている場合
 if (isset($_GET['ip_address']) && isset($_GET['count'])) {
+    // IPアドレスを取得
     $ip_address = $_GET['ip_address'];
+
+    // 回数を取得
     $count = $_GET['count'];
+
     // IPアドレスからホスト名を取得
     $host_name = gethostbyaddr($ip_address);
-    // pingの結果を取得
+
+    // Pingの結果を取得
     $ping_results = ping($ip_address, $count);
 
-    // 結果を表示
-    echo "<pre>WOL後のPing結果 ($ip_address, $host_name)\n";
-    foreach ($ping_results as $result) {
-        echo 'icmp_seq=' . $result['icmp_seq'] . ' time=' . $result['time'] . " ms\n";
-    }
-    echo "</pre>";
+    // 結果をJSON形式で出力
+    header('Content-Type: application/json');
+    echo json_encode([
+        'ip_address' => $ip_address,
+        'host_name' => $host_name,
+        'ping_results' => $ping_results,
+    ]);
 } else {
     // IPアドレスまたは回数が入力されていない場合のエラーメッセージ
-    echo "IPアドレス(ホスト名)または回数が入力されていません。";
+    header('Content-Type: application/json');
+    echo json_encode([
+        'error' => 'IPアドレス(ホスト名)または回数が入力されていません。',
+    ]);
 }
 ?>
