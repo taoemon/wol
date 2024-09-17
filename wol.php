@@ -45,10 +45,13 @@ $count = $_POST['count'];
 // ブロードキャストアドレスでWOLを実行
 $ip_parts = explode('.', $target_ip_address);
 $broadcast_ip = "{$ip_parts[0]}.{$ip_parts[1]}.{$ip_parts[2]}.255";
+// 成功・失敗に応じて適切なメッセージを返す
 if (wol($broadcast_ip, $mac_address)) {
-    // 成功時の処理
+    // 成功時の処理（必要ならメッセージを返す）
+    echo json_encode(['status' => 'success', 'message' => 'WOLパケットの送信に成功しました。']);
 } else {
     // 失敗時の処理
     http_response_code(500);
+    echo json_encode(['status' => 'error', 'message' => 'WOLパケットの送信に失敗しました。']);
 }
 ?>
