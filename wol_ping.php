@@ -12,11 +12,19 @@ function ping($ip_address, $count)
     // -c パラメータはパケット数を指定します
     // -n パラメータはパケット数を指定します（Windows のみ）
     // シェルコマンドをWeb経由で実行する場合「ファイルパーミッション」の設定が必要
+    // ユーザー入力をエスケープしてコマンドインジェクションを防止
+    // countを整数にキャストして不正な値を防ぐ
     // 例：# chmod 4755 /bin/ping
+    $ip_address = escapeshellarg($ip_address); // ユーザー入力をエスケープ
+    $count = (int)$count; // 整数にキャスト
     $ping_command = "/bin/ping -c {$count} {$ip_address}";
 
     // Pingコマンドを実行し、その出力を取得
     $ping_output = shell_exec($ping_command);
+    if ($ping_output === null) {
+        // shell_execが失敗した場合のエラーメッセージを返す
+        return ['error' => 'Pingコマンドの実行に失敗しました。'];
+    }
 
     // Pingの出力を行ごとに分割
     $lines = explode("\n", $ping_output);
@@ -49,14 +57,20 @@ if (isset($_GET['ip_address']) && isset($_GET['count'])) {
     // Pingの結果を取得
     $ping_results = ping($ip_address, $count);
 
-    // 結果をJSON形式で出力
-    header('Content-Type: application/json');
-    echo json_encode([
-        'ip_address' => $ip_address,
-        'host_name' => $host_name,
-        'ping_results' => $ping_results,
-    ]);
-} else {
+    // エラーが発生した場合
+    if (isset($ping_results['error'])) {
+        echo json_encode([
+            'error' => $ping_results['error'],
+        ]);
+    } else {
+        // 結果をJSON形式で出力
+        echo json_encode([
+            'ip_address' => $ip_address,
+            'host_name' => $host_name,
+            'ping_results' => $ping_results,
+        ]);
+    }
+
     // IPアドレスまたは回数が入力されていない場合のエラーメッセージ
     header('Content-Type: application/json');
     echo json_encode([

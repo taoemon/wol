@@ -5,19 +5,17 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Wake On LAN & Ping Test</title>
     <link rel="stylesheet" href="wol.css">
-</head>
-<!-- HTML構文です -->
-<!-- 複数のパソコンをWOLで起動する場合、上記の「wolSettings」配列を追加し、対応するコードを「wolSettings[X]」の「X」を加算して追記 -->
-<!-- 複数のパソコンをWOLで起動する場合、「'wol-result1', 'countdown1', 'ping-results1'」の数値箇所変更して追記 -->
-<!-- 各要素にユニークなIDを設定して、JavaScriptから正確に参照できるようにする -->
     <!-- JavaScriptファイルの読み込み -->
     <script src="wol.js"></script>
     <script src="wol_ping.js"></script>
     <script src="ping.js"></script>
+</head>
 <body>
-    <header>
         <h1>Wake On LAN & Ping Test</h1>
     </header>
+    <!-- 複数のパソコンをWOLで起動する場合、上記の「wolSettings」配列を追加し、対応するコードを「wolSettings[X]」の「X」を加算して追記 -->
+    <!-- 複数のパソコンをWOLで起動する場合、「'wol-result1', 'countdown1', 'ping-results1'」の数値箇所変更して追記 -->
+    <!-- 各要素にユニークなIDを設定して、JavaScriptから正確に参照できるようにする -->
     <main>
         <section id="wake-on-lan">
             <h2>Wake On LAN</h2>
