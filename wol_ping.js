@@ -1,13 +1,12 @@
 // wol_ping.js
 // 関数 wolSendPing() は、ping テストを実行します。
-function wolSendPing(targetIpAddress) {
+function wolSendPing(targetIpAddress, pingResultsId) {
     // 入力された IP アドレスと回数を取得します。
     const ipAddress = targetIpAddress;
     const count = '5';
 
-    // 結果を表示する div 要素を取得します。
-    const pingResultsDiv = document.getElementById("ping-results");
-
+    // 指定されたpingResultsIdの要素にPing結果を表示
+    const pingResultsDiv = document.getElementById(pingResultsId);
     // 結果をクリアします。
     pingResultsDiv.innerHTML = "";
 

@@ -19,7 +19,7 @@ const wolSettings = [
 ];
 
 // WOLパケットとPingを送信する関数
-async function wolPing(settings, wolResultId, countdownId) {
+async function wolPing(settings, wolResultId, countdownId, pingResultsId) {
     // WOLパケット送信中...
     const wolResult = document.getElementById(wolResultId);
     wolResult.innerText = 'WOLパケット送信中...';
@@ -42,7 +42,7 @@ async function wolPing(settings, wolResultId, countdownId) {
 
         // WOLパケット送信成功時、Pingのカウントダウンを開始
         if (response.ok) {
-            startCountdown(30, countdownId, settings.targetIpAddress);
+            startCountdown(30, countdownId, settings.targetIpAddress, pingResultsId);
         }
     } catch (error) {
         // 送信中にエラーが発生した場合、エラーメッセージを表示
@@ -51,7 +51,7 @@ async function wolPing(settings, wolResultId, countdownId) {
 }
 
 // カウントダウンを開始する関数
-function startCountdown(seconds, countdownElementId, targetIpAddress) {
+function startCountdown(seconds, countdownElementId, targetIpAddress, pingResultsId) {
     let remaining = seconds;
     const countdownElement = document.getElementById(countdownElementId);
     countdownElement.innerText = `Ping開始までのカウントダウン: ${remaining}秒`;
@@ -65,7 +65,7 @@ function startCountdown(seconds, countdownElementId, targetIpAddress) {
             clearInterval(interval); // カウントダウンの更新を停止
             countdownElement.innerText = 'Pingを実行...下記のフォーム内に結果を表示';
             //  wol_ping.js を呼び出す
-            wolSendPing(targetIpAddress); // Ping送信を開始
+            wolSendPing(targetIpAddress, pingResultsId); // Ping送信を開始
         }
     }, 1000);
 }

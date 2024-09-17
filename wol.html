@@ -8,7 +8,7 @@
 </head>
 <!-- HTML構文です -->
 <!-- 複数のパソコンをWOLで起動する場合、上記の「wolSettings」配列を追加し、対応するコードを「wolSettings[X]」の「X」を加算して追記 -->
-<!-- 複数のパソコンをWOLで起動する場合、「'wol-result1', 'countdown1'」の数値箇所変更して追記 -->
+<!-- 複数のパソコンをWOLで起動する場合、「'wol-result1', 'countdown1', 'ping-results1'」の数値箇所変更して追記 -->
     <!-- JavaScriptファイルの読み込み -->
     <script src="wol.js"></script>
     <script src="wol_ping.js"></script>
@@ -24,15 +24,17 @@
             <div class="wol-container">
                 <div class="wol-item">
                     <h3>1. PC1 [192.168.123.10]</h3>
-                    <button onclick="wolPing(wolSettings[0], 'wol-result1', 'countdown1')" type="submit">WOL & Ping</button>
+                    <button onclick="wolPing(wolSettings[0], 'wol-result1', 'countdown1', 'ping-results1')" type="submit">WOL & Ping</button>
                     <div id="wol-result1"></div>
                     <div id="countdown1"></div>
+                    <div id="ping-results1"></div>
                 </div>
                 <div class="wol-item">
                     <h3>2. PC2 [192.168.123.11]</h3>
-                    <button onclick="wolPing(wolSettings[1], 'wol-result2', 'countdown2')" type="submit">WOL & Ping</button>
+                    <button onclick="wolPing(wolSettings[1], 'wol-result2', 'countdown2', 'ping-results2')" type="submit">WOL & Ping</button>
                     <div id="wol-result2"></div>
                     <div id="countdown2"></div>
+                    <div id="ping-results2"></div>
                 </div>
             </div>
             <div class="spacer"></div>
