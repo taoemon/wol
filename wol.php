@@ -42,6 +42,22 @@ $target_ip_address = $_POST['ip_address'];
 $mac_address = $_POST['mac_address'];
 $count = $_POST['count'];
 
+// IPアドレスを検証
+if (!filter_var($target_ip_address, FILTER_VALIDATE_IP)) {
+    http_response_code(400);
+    echo json_encode(['status' => 'error', 'message' => '無効なIPアドレスです。']);
+    exit;
+}
+// IPアドレスが無効な場合はエラーメッセージを返す
+
+// MACアドレスを検証
+if (!preg_match('/^([0-9A-Fa-f]{2}[:-]){5}([0-9A-Fa-f]{2})$/', $mac_address)) {
+    http_response_code(400);
+    echo json_encode(['status' => 'error', 'message' => '無効なMACアドレスです。']);
+    exit;
+}
+// MACアドレスが無効な場合はエラーメッセージを返す
+
 // ブロードキャストアドレスでWOLを実行
 $ip_parts = explode('.', $target_ip_address);
 $broadcast_ip = "{$ip_parts[0]}.{$ip_parts[1]}.{$ip_parts[2]}.255";

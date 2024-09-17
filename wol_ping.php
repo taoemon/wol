@@ -18,9 +18,12 @@ function ping($ip_address, $count)
     $ip_address = escapeshellarg($ip_address); // ユーザー入力をエスケープ
     $count = (int)$count; // 整数にキャスト
     $ping_command = "/bin/ping -c {$count} {$ip_address}";
-
     // Pingコマンドを実行し、その出力を取得
     $ping_output = shell_exec($ping_command);
+    if ($ping_output === null) {
+        // shell_execが失敗した場合のエラーメッセージを返す
+        return ['error' => 'Pingコマンドの実行に失敗しました。'];
+    }
 
     // Pingの出力を行ごとに分割
     $lines = explode("\n", $ping_output);
