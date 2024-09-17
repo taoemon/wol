@@ -12,7 +12,11 @@ function ping($ip_address, $count)
     // -c パラメータはパケット数を指定します
     // -n パラメータはパケット数を指定します（Windows のみ）
     // シェルコマンドをWeb経由で実行する場合「ファイルパーミッション」の設定が必要
+    // ユーザー入力をエスケープしてコマンドインジェクションを防止
+    // countを整数にキャストして不正な値を防ぐ
     // 例：# chmod 4755 /bin/ping
+    $ip_address = escapeshellarg($ip_address); // ユーザー入力をエスケープ
+    $count = (int)$count; // 整数にキャスト
     $ping_command = "/bin/ping -c {$count} {$ip_address}";
 
     // Pingコマンドを実行し、その出力を取得
