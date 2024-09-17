@@ -21,10 +21,6 @@ function ping($ip_address, $count)
 
     // Pingコマンドを実行し、その出力を取得
     $ping_output = shell_exec($ping_command);
-    if ($ping_output === null) {
-        // shell_execが失敗した場合のエラーメッセージを返す
-        return ['error' => 'Pingコマンドの実行に失敗しました。'];
-    }
 
     // Pingの出力を行ごとに分割
     $lines = explode("\n", $ping_output);
@@ -57,20 +53,14 @@ if (isset($_GET['ip_address']) && isset($_GET['count'])) {
     // Pingの結果を取得
     $ping_results = ping($ip_address, $count);
 
-    // エラーが発生した場合
-    if (isset($ping_results['error'])) {
-        echo json_encode([
-            'error' => $ping_results['error'],
-        ]);
-    } else {
-        // 結果をJSON形式で出力
-        echo json_encode([
-            'ip_address' => $ip_address,
-            'host_name' => $host_name,
-            'ping_results' => $ping_results,
-        ]);
-    }
-
+    // 結果をJSON形式で出力
+    header('Content-Type: application/json');
+    echo json_encode([
+        'ip_address' => $ip_address,
+        'host_name' => $host_name,
+        'ping_results' => $ping_results,
+    ]);
+} else {
     // IPアドレスまたは回数が入力されていない場合のエラーメッセージ
     header('Content-Type: application/json');
     echo json_encode([
