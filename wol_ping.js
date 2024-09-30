@@ -1,40 +1,40 @@
 // wol_ping.js
 // 関数 wolSendPing() は、ping テストを実行します。
 function wolSendPing(targetIpAddress, pingResultsId) {
-    // 入力された IP アドレスと回数を取得します。
-    const ipAddress = targetIpAddress;
-    const count = '5';
+	// 入力された IP アドレスと回数を取得します。
+	const ipAddress = targetIpAddress;
+	const count = '5'; // Ping回数を変更する場合は、こちらの数字を変更してください。
 
-    // 指定されたpingResultsIdの要素にPing結果を表示
-    const pingResultsDiv = document.getElementById(pingResultsId);
-    // 結果をクリアします。
-    pingResultsDiv.innerHTML = "";
+	// 指定されたpingResultsIdの要素にPing結果を表示
+	const pingResultsDiv = document.getElementById(pingResultsId);
 
-    // wol_ping.php から結果を取得します。
-    fetch(`wol_ping.php?ip_address=${encodeURIComponent(ipAddress)}&count=${encodeURIComponent(count)}`)
-        .then(response => response.json())
-        .then(data => {
-            // エラーがある場合は、エラーメッセージを表示します。
-            if (data.error) {
-                pingResultsDiv.textContent = data.error;
-            } else {
-                // IP アドレスとホスト名を表示します。
-                pingResultsDiv.textContent = `Ping テストの結果 (${data.ip_address}, ${data.host_name})\n`;
+	// 結果をクリアします。
+	pingResultsDiv.value = "";
 
-                // 1 秒ごとに結果を表示します。
-                let index = 0;
-                const interval = setInterval(() => {
-                    // 結果の配列が終了するまで繰り返します。
-                    if (index < data.ping_results.length) {
-                        // 結果を 1 行ずつ表示します。
-                        const result = data.ping_results[index];
-                        pingResultsDiv.textContent += `icmp_seq=${result.icmp_seq} time=${result.time} ms\n`;
-                        index++;
-                    } else {
-                        // 間隔をクリアします。
-                        clearInterval(interval);
-                    }
-                }, 1000);
-            }
-        });
+	// wol_ping.php から結果を取得します。
+	fetch(`wol_ping.php?ip_address=${encodeURIComponent(ipAddress)}&count=${encodeURIComponent(count)}`)
+		.then(response => response.json())
+		.then(data => {
+			// エラーがある場合は、エラーメッセージを表示します。
+			if (data.error) {
+				pingResultsDiv.value = data.error;
+			} else {
+				// IP アドレスとホスト名を表示します。
+				pingResultsDiv.value = `Ping テストの結果 (${data.ip_address}, ${data.host_name})\n`;
+				// 1 秒ごとに結果を表示します。
+				let index = 0;
+				const interval = setInterval(() => {
+					// 結果の配列が終了するまで繰り返します。
+					if (index < data.ping_results.length) {
+						// 結果を 1 行ずつ表示します。
+						const result = data.ping_results[index];
+						pingResultsDiv.value += `icmp_seq=${result.icmp_seq} time=${result.time} ms\n`;
+						index++;
+					} else {
+						// 間隔をクリアします。
+						clearInterval(interval);
+					}
+				}, 1000);
+			}
+		});
 }
