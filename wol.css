@@ -98,6 +98,7 @@ textarea {
 	height: 200px;
 	display: block;
 	margin: 20px auto;
+	white-space: pre-wrap; /* 改行を保持 */
 }
 
 /* スペーサーのスタイル */

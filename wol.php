@@ -48,7 +48,6 @@ if (!filter_var($target_ip_address, FILTER_VALIDATE_IP)) {
 	echo json_encode(['status' => 'error', 'message' => '無効なIPアドレスです。']);
 	exit;
 }
-// IPアドレスが無効な場合はエラーメッセージを返す
 
 // MACアドレスを検証
 if (!preg_match('/^([0-9A-Fa-f]{2}[:-]){5}([0-9A-Fa-f]{2})$/', $mac_address)) {
@@ -56,14 +55,14 @@ if (!preg_match('/^([0-9A-Fa-f]{2}[:-]){5}([0-9A-Fa-f]{2})$/', $mac_address)) {
 	echo json_encode(['status' => 'error', 'message' => '無効なMACアドレスです。']);
 	exit;
 }
-// MACアドレスが無効な場合はエラーメッセージを返す
 
 // ブロードキャストアドレスでWOLを実行
 $ip_parts = explode('.', $target_ip_address);
 $broadcast_ip = "{$ip_parts[0]}.{$ip_parts[1]}.{$ip_parts[2]}.255";
+
 // 成功・失敗に応じて適切なメッセージを返す
 if (wol($broadcast_ip, $mac_address)) {
-	// 成功時の処理（必要ならメッセージを返す）
+	// 成功時の処理
 	echo json_encode(['status' => 'success', 'message' => 'WOLパケットの送信に成功しました。']);
 } else {
 	// 失敗時の処理

@@ -1,72 +1,59 @@
 // wol.js
 // 複数のデバイスの設定
-// 新しいデバイスを追加するには、下記の「wolSettings」配列に新しいオブジェクトを追加してください。
 const wolSettings = [
-	// 1つ目のデバイスの設定
 	{
 		url: 'wol.php',
-		targetIpAddress: '***.***.***.***',
-		macAddress: '**:**:**:**:**:**',
-		count: 3
+		targetIpAddress: '192.168.1.1', // IPを追加
+		macAddress: '11:11:11:11:11:11', // macアドレスを追加
+		count: 3, // WOLパケット数
+		name: 'PC1' // PC名を追加
 	},
-	// 2つ目のデバイスの設定
 	{
 		url: 'wol.php',
-		targetIpAddress: '***.***.***.***',
-		macAddress: '**:**:**:**:**:**',
-		count: 3
+		targetIpAddress: '192.168.1.2', // IPを追加
+		macAddress: '22:22:22:22:22:22', // macアドレスを追加
+		count: 3, // WOLパケット数
+		name: 'PC2' // PC名を追加
 	}
 ];
 
 // WOLパケットとPingを送信する関数
 async function wolPing(settings, wolResultId, countdownId, pingResultsId) {
-	// WOLパケット送信中...
 	const wolResult = document.getElementById(wolResultId);
 	wolResult.innerText = 'WOLパケット送信中...';
 
-	// FormDataを作成し、IPアドレス、MACアドレス、送信回数を設定
 	const formData = new FormData();
 	formData.append('ip_address', settings.targetIpAddress);
 	formData.append('mac_address', settings.macAddress);
 	formData.append('count', settings.count);
 
 	try {
-		// WOLパケットを送信
-		const response = await fetch(settings.url, {
-			method: 'POST',
-			body: formData
-		});
-
-		// 送信結果に応じて表示内容を更新
+		const response = await fetch(settings.url, { method: 'POST', body: formData });
 		wolResult.innerText = response.ok ? 'WOLパケットの送信に成功しました。' : 'WOLパケットの送信に失敗しました。';
 
-		// WOLパケット送信成功時、Pingのカウントダウンを開始
-		// Pingまでのカウントダウン時間を変更する場合は、こちらの数字（秒）を変更してください。
 		if (response.ok) {
-			startCountdown(30, countdownId, settings.targetIpAddress, pingResultsId);
+			// カウントダウンを開始 Ping開始までの待機時間（秒）
+			startCountdown(30, countdownId, settings.targetIpAddress, pingResultsId, settings.name);  // PC名を渡す
 		}
 	} catch (error) {
-		// 送信中にエラーが発生した場合、エラーメッセージを表示
 		wolResult.innerText = `エラーが発生しました: ${error.message}`;
 	}
 }
 
-// カウントダウンを開始する関数
-function startCountdown(seconds, countdownElementId, targetIpAddress, pingResultsId) {
+// カウントダウンを行い、Pingを開始する関数
+function startCountdown(seconds, countdownElementId, targetIpAddress, pingResultsId, pcName) {
 	let remaining = seconds;
 	const countdownElement = document.getElementById(countdownElementId);
 	countdownElement.innerText = `Ping開始までのカウントダウン: ${remaining}秒`;
 
-	// setIntervalを使って1秒ごとにカウントダウンを更新
 	const interval = setInterval(() => {
 		countdownElement.innerText = `Ping開始までのカウントダウン: ${--remaining}秒`;
 
-		// カウントダウンが0になったら
 		if (remaining <= 0) {
-			clearInterval(interval); // カウントダウンの更新を停止
-			countdownElement.innerText = 'Pingを実行...下記のフォーム内に結果を表示';
-			//  wol_ping.js を呼び出す
-			wolSendPing(targetIpAddress, pingResultsId); // Ping送信を開始
+			clearInterval(interval);
+			countdownElement.innerText = 'Pingを実行中...';
+			// Ping処理を呼び出す
+			wolSendPing(targetIpAddress, pingResultsId, pcName);  // PC名を渡す
 		}
 	}, 1000);
 }

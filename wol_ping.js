@@ -1,40 +1,52 @@
 // wol_ping.js
-// 関数 wolSendPing() は、ping テストを実行します。
-function wolSendPing(targetIpAddress, pingResultsId) {
-	// 入力された IP アドレスと回数を取得します。
+// Ping結果を送信し、リアルタイムで結果を表示する関数
+function wolSendPing(targetIpAddress, pingResultsId, pcName) {
 	const ipAddress = targetIpAddress;
-	const count = '5'; // Ping回数を変更する場合は、こちらの数字を変更してください。
-
-	// 指定されたpingResultsIdの要素にPing結果を表示
+	const count = '5'; // Ping 回数
 	const pingResultsDiv = document.getElementById(pingResultsId);
 
 	// 結果をクリアします。
 	pingResultsDiv.value = "";
 
-	// wol_ping.php から結果を取得します。
+	// 以前のintervalがあればクリア
+	if (window.pingIntervalId !== null) {
+		clearInterval(window.pingIntervalId);
+		window.pingIntervalId = null;
+	}
+
+	// PC名とPing開始メッセージを追加
+	pingResultsDiv.value += `=== ${pcName} (${ipAddress}) へのPingテスト開始 ===\n`;
+
 	fetch(`wol_ping.php?ip_address=${encodeURIComponent(ipAddress)}&count=${encodeURIComponent(count)}`)
-		.then(response => response.json())
+		.then(response => {
+			if (!response.ok) {
+				throw new Error(`ステータスエラー: ${response.status}`);
+			}
+			return response.json();
+		})
 		.then(data => {
-			// エラーがある場合は、エラーメッセージを表示します。
 			if (data.error) {
-				pingResultsDiv.value = data.error;
+				pingResultsDiv.value += `エラー: ${data.error}\n`;
 			} else {
-				// IP アドレスとホスト名を表示します。
-				pingResultsDiv.value = `Ping テストの結果 (${data.ip_address}, ${data.host_name})\n`;
-				// 1 秒ごとに結果を表示します。
+				pingResultsDiv.value += `ホスト名: ${data.host_name}\n`;
+
 				let index = 0;
-				const interval = setInterval(() => {
-					// 結果の配列が終了するまで繰り返します。
+				window.pingIntervalId = setInterval(() => {
 					if (index < data.ping_results.length) {
-						// 結果を 1 行ずつ表示します。
 						const result = data.ping_results[index];
 						pingResultsDiv.value += `icmp_seq=${result.icmp_seq} time=${result.time} ms\n`;
+						pingResultsDiv.scrollTop = pingResultsDiv.scrollHeight;
 						index++;
 					} else {
-						// 間隔をクリアします。
-						clearInterval(interval);
+						pingResultsDiv.value += `=== ${pcName} へのPingテスト終了 ===\n`;
+						pingResultsDiv.scrollTop = pingResultsDiv.scrollHeight;
+						clearInterval(window.pingIntervalId);
+						window.pingIntervalId = null;
 					}
 				}, 1000);
 			}
+		})
+		.catch(error => {
+			pingResultsDiv.value += `フェッチエラー: ${error.message}\n`;
 		});
 }

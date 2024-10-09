@@ -6,40 +6,43 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<title>Wake On LAN & Ping Test</title>
 	<link rel="stylesheet" href="wol.css">
+	<!-- グローバルなinterval IDを管理する変数を宣言 -->
+	<script>
+		var pingIntervalId = null;
+	</script>
 	<!-- JavaScriptファイルの読み込み -->
-	<!-- wol_ping.js を先に読み込む -->
 	<script src="wol_ping.js"></script>
 	<script src="wol.js"></script>
 	<script src="ping.js"></script>
 </head>
 <body>
-		<h1>Wake On LAN & Ping Test</h1>
-	</header>
-	<!-- 複数のパソコンをWOLで起動する場合、上記の「wolSettings」配列を追加し、対応するコードを「wolSettings[X]」の「X」を加算して追記 -->
-	<!-- 複数のパソコンをWOLで起動する場合、「'wol-result1', 'countdown1', 'ping-results1'」の数値箇所変更して追記 -->
-	<!-- 各要素にユニークなIDを設定して、JavaScriptから正確に参照できるようにする -->
+	<h1>Wake On LAN & Ping Test</h1>
 	<main>
+	<!-- 複数のパソコンをWOLで起動する場合、下記の「wolSettings」配列を追加し、対応するコードを「wolSettings[X]」の「X」を加算して追記 -->
+	<!-- 複数のパソコンをWOLで起動する場合、「'wol-result1', 'countdown1'」の数値箇所変更して追記 -->
+	<!-- 各要素にユニークなIDを設定して、JavaScriptから正確に参照できるようにする -->
 		<section id="wake-on-lan">
 			<h2>Wake On LAN</h2>
-			<p>以下のリストから、起動したいパソコンを選択してください。<br>選択したパソコンにWOLとPingが送信されます。</p>
+			<p>以下のリストから、起動したいパソコンを選択し「WOL & Ping 開始」ボタンを押してください。
+			<br>選択したパソコンにWOLパケットとPingパケットが送信されます。</p>
 			<div class="wol-container">
 				<div class="wol-item">
-					<h3>1. PC1 [192.168.123.10]</h3>
-					<button onclick="wolPing(wolSettings[0], 'wol-result1', 'countdown1', 'ping-results')" type="submit">WOL & Ping</button>
+					<h3>1. PC1 [192.168.1.1]</h3>
+					<button onclick="wolPing(wolSettings[0], 'wol-result1', 'countdown1', 'ping-results')" type="submit">WOL & Ping 開始</button>
 					<div id="wol-result1"></div>
 					<div id="countdown1"></div>
 				</div>
 				<div class="wol-item">
-					<h3>2. PC2 [192.168.123.11]</h3>
-					<button onclick="wolPing(wolSettings[1], 'wol-result2', 'countdown2', 'ping-results')" type="submit">WOL & Ping</button>
+					<h3>2. PC2 [192.168.1.2]</h3>
+					<button onclick="wolPing(wolSettings[1], 'wol-result2', 'countdown2', 'ping-results')" type="submit">WOL & Ping 開始</button>
 					<div id="wol-result2"></div>
 					<div id="countdown2"></div>
-					<div id="ping-results2"></div>
 				</div>
 			</div>
-		<hr>
+			<hr>
 			<h2>Ping Test</h2>
-			<p>以下のフォームにIPアドレス(ホスト名)と回数を入力し、「Ping」ボタンを押すとPingテストが実行されます。</p>
+			<p>以下のフォームにIPアドレス(ホスト名)と回数を入力し、
+			<br>「Ping 開始」ボタンを押すとPingテストが実行されます。</p>
 			<form id="ping-form" onsubmit="doPingTest(event)">
 				<div class="form-group">
 					<label for="ip_address">IPアドレス(ホスト名):</label><br>
@@ -50,11 +53,10 @@
 					<input type="number" id="count" name="count" value="5" min="1">
 				</div>
 				<button type="submit">Ping 開始</button>
-		<hr>
-			<h2>Ping 結果</h2>
-			<p>以下のフォームにPing実行結果が表示されます。</p>
-				<textarea id="ping-results" readonly rows="10" cols="50"></textarea>
 			</form>
+			<hr>
+			<h2>Ping 結果</h2>
+			<textarea id="ping-results" readonly rows="10" cols="50"></textarea>
 		</section>
 	</main>
 </body>
